@@ -1,0 +1,54 @@
+#+STARTUP: showeverything
+#+OPTIONS: toc:nil
+#+OPTIONS: ^:nil
+
+** reverse
+
+*** about
+
+Train a seq2seq encoder-decoder model to reverse the input string.
+
+rebuild of the tutorial of joeynmt:
+https://joeynmt.readthedocs.io/en/latest/tutorial.html
+in allennlp
+
+Blog post describing the code in this repository:
+- https://madflex.de/posts/allennlp--reverse-sequence-example/
+
+*** first
+
+download generator script from joeynmt
+#+BEGIN_SRC bash
+mkdir -p tools; cd tools
+wget https://raw.githubusercontent.com/joeynmt/joeynmt/master/scripts/generate_reverse_task.py
+cd ..
+#+END_SRC
+
+generate some data
+#+BEGIN_SRC bash
+mkdir data; cd data
+python ../tools/generate_reverse_task.py
+cd ..
+#+END_SRC
+
+convert data to tsv for seq2seq datareader
+#+BEGIN_SRC bash
+cd data
+paste dev.src dev.trg > dev.csv
+paste test.src test.trg > test.csv
+paste train.src train.trg > train.csv
+cd ..
+#+END_SRC
+
+*** training
+
+#+begin_src bash
+allennlp train configurations/reverse_starting_point.json -s output -f
+#+end_src
+
+*** predict / evaluation
+
+#+begin_src bash
+echo '{"source": "15 28 32 4", "target": "4 32 28 15"}' > reverse_example.json
+allennlp predict output/model.tar.gz reverse_example.json --predictor seq2seq
+#+end_src
