@@ -12,8 +12,9 @@ rebuild of the tutorial of joeynmt:
 https://joeynmt.readthedocs.io/en/latest/tutorial.html
 in allennlp
 
-Blog post describing the code in this repository:
+Blog posts describing the code in this repository:
 - https://madflex.de/posts/allennlp--reverse-sequence-example/
+- https://madflex.de/posts/allennlp--sequence-to-sequence-attention-plots/
 
 *** first
 
