@@ -43,7 +43,7 @@ cd ..
 *** training
 
 #+begin_src bash
-allennlp train configurations/reverse_starting_point.json -s output -f
+allennlp train configurations/reverse_starting_point.json -s output -f --include-package library
 #+end_src
 
 *** predict / evaluation

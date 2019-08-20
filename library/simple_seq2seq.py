@@ -20,8 +20,8 @@ from allennlp.nn.beam_search import BeamSearch
 from allennlp.training.metrics import BLEU
 
 
-@Model.register("simple_seq2seq")
-class SimpleSeq2Seq(Model):
+@Model.register("my_seq2seq")
+class MySeq2Seq(Model):
     """
     This ``SimpleSeq2Seq`` class is a :class:`Model` which takes a sequence, encodes it, and then
     uses the encoded representations to decode another sequence.  You can use this as the basis for
@@ -81,7 +81,7 @@ class SimpleSeq2Seq(Model):
                  target_embedding_dim: int = None,
                  scheduled_sampling_ratio: float = 0.,
                  use_bleu: bool = True) -> None:
-        super(SimpleSeq2Seq, self).__init__(vocab)
+        super().__init__(vocab)
         self._target_namespace = target_namespace
         self._scheduled_sampling_ratio = scheduled_sampling_ratio
 

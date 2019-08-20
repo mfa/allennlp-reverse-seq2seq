@@ -12,7 +12,7 @@
   "validation_data_path": "data/dev.csv",
   "test_data_path": "data/test.csv",
   "model": {
-    "type": "simple_seq2seq",
+    "type": "my_seq2seq",
     "max_decoding_steps": 30,
     "use_bleu": true,
     "beam_size": 10,
