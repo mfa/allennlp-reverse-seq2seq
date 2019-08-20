@@ -323,6 +323,7 @@ class SimpleSeq2Seq(Model):
 
         step_logits: List[torch.Tensor] = []
         step_predictions: List[torch.Tensor] = []
+        attn: List[torch.Tensor] = []
         for timestep in range(num_decoding_steps):
             if self.training and torch.rand(1).item() < self._scheduled_sampling_ratio:
                 # Use gold tokens at test time and at a rate of 1 - _scheduled_sampling_ratio
@@ -338,6 +339,8 @@ class SimpleSeq2Seq(Model):
 
             # shape: (batch_size, num_classes)
             output_projections, state = self._prepare_output_projections(input_choices, state)
+            if not self.training:
+                attn.append(torch.squeeze(state["attention_weights"]))
 
             # list of tensors, shape: (batch_size, 1, num_classes)
             step_logits.append(output_projections.unsqueeze(1))
@@ -357,6 +360,9 @@ class SimpleSeq2Seq(Model):
         predictions = torch.cat(step_predictions, 1)
 
         output_dict = {"predictions": predictions}
+
+        if not self.training:
+            output_dict["attentions"] = torch.unsqueeze(torch.stack(attn), 0)
 
         if target_tokens:
             # shape: (batch_size, num_decoding_steps, num_classes)
@@ -412,7 +418,8 @@ class SimpleSeq2Seq(Model):
 
         if self._attention:
             # shape: (group_size, encoder_output_dim)
-            attended_input = self._prepare_attended_input(decoder_hidden, encoder_outputs, source_mask)
+            attended_input, input_weights = self._prepare_attended_input(decoder_hidden, encoder_outputs, source_mask)
+            state["attention_weights"] = input_weights
 
             # shape: (group_size, decoder_output_dim + target_embedding_dim)
             decoder_input = torch.cat((attended_input, embedded_input), -1)
@@ -451,7 +458,7 @@ class SimpleSeq2Seq(Model):
         # shape: (batch_size, encoder_output_dim)
         attended_input = util.weighted_sum(encoder_outputs, input_weights)
 
-        return attended_input
+        return attended_input, input_weights
 
     @staticmethod
     def _get_loss(logits: torch.LongTensor,
