@@ -10,7 +10,7 @@ Train a seq2seq encoder-decoder model to reverse the input string.
 
 rebuild of the tutorial of joeynmt:
 https://joeynmt.readthedocs.io/en/latest/tutorial.html
-in allennlp
+in AllenNLP
 
 Blog posts describing the code in this repository:
 - https://madflex.de/posts/allennlp--reverse-sequence-example/
