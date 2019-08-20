@@ -52,3 +52,10 @@ allennlp train configurations/reverse_starting_point.json -s output -f --include
 echo '{"source": "15 28 32 4", "target": "4 32 28 15"}' > reverse_example.json
 allennlp predict output/model.tar.gz reverse_example.json --predictor seq2seq
 #+end_src
+
+*** predict with attention plots
+
+#+begin_src bash
+allennlp predict output/model.tar.gz --use-dataset-reader examples.csv --predictor my_seq2seq --output-file output/examples.output --include-package library
+python tools/plot_attention.py
+#+end_src
