@@ -17,8 +17,8 @@ with open("output/examples.output") as fp:
 
         ax.set_xticks(np.arange(len(source)))
         ax.set_yticks(np.arange(len(target)))
-        ax.set_xticklabels(source, rotation=90)
-        ax.set_yticklabels(target)
+        ax.set_xticklabels(source[1:-1], rotation=90)
+        ax.set_yticklabels(target[:-1])
 
         fig.tight_layout()
         plt.savefig(f"output/attention_{index}.png")
