@@ -44,7 +44,7 @@ cd ..
 *** training
 
 #+begin_src bash
-allennlp train configurations/reverse_starting_point.json -s output -f --include-package library
+allennlp train configurations/reverse_starting_point.json -s output -f
 #+end_src
 
 *** predict / evaluation
@@ -55,6 +55,8 @@ allennlp predict output/model.tar.gz reverse_example.json --predictor seq2seq
 #+end_src
 
 *** predict with attention plots
+
+(not ported to AllenNLP 1.0 yet)
 
 #+begin_src bash
 allennlp predict output/model.tar.gz --use-dataset-reader examples.csv --predictor my_seq2seq --output-file output/examples.output --include-package library
